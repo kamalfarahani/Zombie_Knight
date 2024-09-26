@@ -2,14 +2,14 @@ import pygame
 
 from .render.renderer import Renderer
 from .state.game_state import GameState
-from .state.tile import GrassTileState
-from .state.player import PlayerState, PlayerMode
+from .state import PlayerState, PlayerMode, create_tiles_from_tile_map
+from .constants.tile import TILE_MAP
 
 
 def main():
     pygame.init()
 
-    display = pygame.display.set_mode((800, 600))
+    display = pygame.display.set_mode((1280, 640))
     clock = pygame.time.Clock()
 
     renderer = Renderer(display)
@@ -22,17 +22,7 @@ def main():
             velocity=pygame.Vector2(0, 0),
             acceleration=pygame.Vector2(0, 0),
         ),
-        tiles=[
-            GrassTileState(rect=pygame.Rect(0, 20, 32, 32)),
-            GrassTileState(rect=pygame.Rect(32, 20, 32, 32)),
-            GrassTileState(rect=pygame.Rect(64, 20, 32, 32)),
-            GrassTileState(rect=pygame.Rect(96, 20, 32, 32)),
-            GrassTileState(rect=pygame.Rect(128, 20, 32, 32)),
-            GrassTileState(rect=pygame.Rect(160, 20, 32, 32)),
-            GrassTileState(rect=pygame.Rect(192, 20, 32, 32)),
-            GrassTileState(rect=pygame.Rect(224, 20, 32, 32)),
-            GrassTileState(rect=pygame.Rect(256, 20, 32, 32)),
-        ],
+        tiles=create_tiles_from_tile_map(TILE_MAP),
     )
 
     while True:
