@@ -17,6 +17,7 @@ class PlayerMode(Enum):
 class PlayerState(Matter):
     rect: pygame.Rect
     mode: PlayerMode
+    animation_index: int
     lives: int
     score: int
     velocity: pygame.Vector2
