@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 from .matter import Matter
+from .direction import HorizontalDirection
 
 
 class PlayerMode(Enum):
@@ -17,6 +18,7 @@ class PlayerMode(Enum):
 class PlayerState(Matter):
     rect: pygame.Rect
     mode: PlayerMode
+    horizontal_direction: HorizontalDirection
     animation_index: int
     lives: int
     score: int

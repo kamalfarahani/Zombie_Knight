@@ -7,6 +7,7 @@ from .tile import (
     LeftTileState,
     RightTileState,
 )
+from .direction import HorizontalDirection
 from .utils import create_tiles_from_tile_map
 
 
@@ -19,5 +20,6 @@ __all__ = [
     "GrassTileState",
     "LeftTileState",
     "RightTileState",
+    "HorizontalDirection",
     "create_tiles_from_tile_map",
 ]
