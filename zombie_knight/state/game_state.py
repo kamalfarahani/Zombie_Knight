@@ -10,9 +10,9 @@ class GameState:
     player: PlayerState
     tiles: list[TileState]
 
-    def get_matters(self) -> list[Matter]:
+    def get_matters(self) -> list[tuple[str, Matter]]:
         return [
-            getattr(self, obj)
-            for obj in dir(self)
-            if isinstance(getattr(self, obj), Matter)
+            (attr, getattr(self, attr))
+            for attr in dir(self)
+            if isinstance(getattr(self, attr), Matter)
         ]
