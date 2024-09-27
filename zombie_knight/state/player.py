@@ -10,6 +10,7 @@ class PlayerMode(Enum):
     idle = 0
     walking = 1
     jumping = 2
+    attacking = 3
 
 
 @dataclass
