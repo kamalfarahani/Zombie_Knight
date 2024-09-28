@@ -13,6 +13,7 @@ from .rules.physics.movement import (
     AccelerationRule,
     VelocityRule,
 )
+from .rules.tile import CollideTileRule
 from .rules.player import PlayerMoveRule
 from .constants.tile import TILE_MAP
 from .constants.player import HORIZONTAL_ACCELERATION, HORIZONTAL_FRICTION
@@ -47,6 +48,7 @@ def main():
             horizontal_acceleration=HORIZONTAL_ACCELERATION,
             horizontal_friction=HORIZONTAL_FRICTION,
         ),
+        CollideTileRule(),
     ]
 
     while True:
@@ -59,7 +61,7 @@ def main():
 
         game_state = apply_rules(game_state, rules)
 
-        clock.tick(60)
+        clock.tick(40)
 
 
 def apply_rules(
