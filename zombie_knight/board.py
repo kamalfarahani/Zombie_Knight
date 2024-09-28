@@ -26,7 +26,7 @@ def main():
     game_state = GameState(
         player=PlayerState(
             rect=pygame.Rect(0, 0, 32, 100),
-            mode=PlayerMode.idle,
+            mode=PlayerMode.IDLE,
             horizontal_direction=HorizontalDirection.RIGHT,
             animation_index=0,
             lives=3,

@@ -10,10 +10,10 @@ from .direction import HorizontalDirection
 
 
 class PlayerMode(Enum):
-    idle = 0
-    walking = 1
-    jumping = 2
-    attacking = 3
+    IDLE = 0
+    RUNNING = 3
+    ATTACKING = 1
+    JUMPING = 2
 
 
 @dataclass

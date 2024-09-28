@@ -11,10 +11,10 @@ from ..constants.paths import (
 
 
 player_mode_to_images = {
-    PlayerMode.attacking: PLAYER_ATTACK_IMAGE_PATHS,
-    PlayerMode.idle: PLAYER_IDLE_IMAGE_PATHS,
-    PlayerMode.jumping: PLAYER_JUMP_IMAGE_PATHS,
-    PlayerMode.walking: PLAYER_RUN_IMAGE_PATHS,
+    PlayerMode.ATTACKING: PLAYER_ATTACK_IMAGE_PATHS,
+    PlayerMode.IDLE: PLAYER_IDLE_IMAGE_PATHS,
+    PlayerMode.JUMPING: PLAYER_JUMP_IMAGE_PATHS,
+    PlayerMode.RUNNING: PLAYER_RUN_IMAGE_PATHS,
 }
 
 
