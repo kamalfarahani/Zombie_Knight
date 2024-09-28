@@ -5,7 +5,7 @@ import pygame
 from dataclasses import dataclass, replace
 from enum import Enum
 
-from .matter import Matter
+from .collidable import Collidable
 from .direction import HorizontalDirection
 
 
@@ -17,7 +17,7 @@ class PlayerMode(Enum):
 
 
 @dataclass
-class PlayerState(Matter):
+class PlayerState(Collidable):
     rect: pygame.Rect
     mode: PlayerMode
     horizontal_direction: HorizontalDirection
@@ -41,6 +41,9 @@ class PlayerState(Matter):
     def get_acceleration(self) -> pygame.Vector2:
         return self.acceleration
 
+    def get_collision_rect(self) -> pygame.Rect:
+        return self.rect
+
     def replace_position(self, position: pygame.Vector2) -> PlayerState:
         return replace(
             self,
@@ -63,3 +66,9 @@ class PlayerState(Matter):
             self,
             acceleration=acceleration,
         )
+
+    def replace_collision_rect_position(self, position: pygame.Vector2) -> Collidable:
+        return self.replace_position(position)
+
+    def replace_collidable_velocity(self, velocity: pygame.Vector2) -> Collidable:
+        return self.replace_velocity(velocity)
