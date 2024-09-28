@@ -13,7 +13,9 @@ from .rules.physics.movement import (
     AccelerationRule,
     VelocityRule,
 )
+from .rules.player import PlayerMoveRule
 from .constants.tile import TILE_MAP
+from .constants.player import HORIZONTAL_ACCELERATION, HORIZONTAL_FRICTION
 
 
 def main():
@@ -41,6 +43,10 @@ def main():
         GravityRule(),
         AccelerationRule(),
         VelocityRule(),
+        PlayerMoveRule(
+            horizontal_acceleration=HORIZONTAL_ACCELERATION,
+            horizontal_friction=HORIZONTAL_FRICTION,
+        ),
     ]
 
     while True:
