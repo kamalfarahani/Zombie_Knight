@@ -45,8 +45,8 @@ class PlayerState(Matter):
         return replace(
             self,
             rect=pygame.Rect(
-                position.x,
-                position.y,
+                round(position.x),
+                round(position.y),
                 self.rect.width,
                 self.rect.height,
             ),
