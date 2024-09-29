@@ -26,12 +26,17 @@ class PlayerMoveRule:
         self.horizontal_acceleration = horizontal_acceleration
         self.horizontal_friction = horizontal_friction
 
-    def __call__(self, game_state: GameState) -> GameState:
+    def __call__(
+        self,
+        game_state: GameState,
+        events: list[pygame.event.Event],
+    ) -> GameState:
         """
         Applies the player move rule to the game state.
 
         Args:
             game_state (GameState): The game state to apply the player move rule to.
+            events (list[pygame.event.Event]): The events occurred in the current frame.
 
         Returns:
             GameState: The new game state with the player move rule applied.
@@ -139,3 +144,52 @@ class PlayerMoveRule:
             return HorizontalDirection.LEFT
         else:
             return HorizontalDirection.RIGHT
+
+
+class PlayerJumpRule:
+    def __init__(
+        self,
+        jump_velocity: float,
+    ) -> None:
+        """
+        Initializes the player jump rule.
+
+        Args:
+            jump_velocity (float): The jump velocity of the player.
+
+        Returns:
+            None
+        """
+        self.jump_velocity = jump_velocity
+
+    def __call__(
+        self,
+        game_state: GameState,
+        events: list[pygame.event.Event],
+    ) -> GameState:
+        """
+        Applies the player jump rule to the game state.
+
+        Args:
+            game_state (GameState): The game state to apply the player jump rule to.
+            events (list[pygame.event.Event]): The events occurred in the current frame.
+
+        Returns:
+            GameState: The new game state with the player jump rule applied.
+        """
+        for event in events:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                new_velocity = pygame.Vector2(
+                    game_state.player.velocity.x,
+                    -self.jump_velocity,
+                )
+                return replace(
+                    game_state,
+                    player=replace(
+                        game_state.player,
+                        velocity=new_velocity,
+                        mode=PlayerMode.JUMPING,
+                    ),
+                )
+
+        return game_state
