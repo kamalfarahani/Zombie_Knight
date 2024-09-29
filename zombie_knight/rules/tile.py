@@ -12,13 +12,18 @@ class CollideTileRule:
     def __init__(self, tile_margin: int = 2) -> None:
         self.tile_margin = tile_margin
 
-    def __call__(self, game_state: GameState) -> GameState:
+    def __call__(
+        self,
+        game_state: GameState,
+        events: list[pygame.event.Event],
+    ) -> GameState:
         """
         Applies the collide tile rule to the game state.
         This rule controls interactions between collidables and tiles.
 
         Args:
             game_state (GameState): The game state to apply the collide tile rule to.
+            events (list[pygame.event.Event]): The events occurred in the current frame.
 
         Returns:
             GameState: The new game state with the collide tile rule applied.
@@ -48,14 +53,28 @@ class CollideTileRule:
         if tile is None:
             return pygame.Vector2(rect.x, rect.y)
 
-        velocity = collidable.get_velocity()
-        if rect.bottom <= tile.rect.bottom and velocity.y >= 0:
+        if self.is_colliding_from_top(collidable, tile):
             return pygame.Vector2(
                 rect.x,
                 tile.rect.top - rect.height + self.tile_margin,
             )
+        elif self.is_colliding_from_bottom(collidable, tile):
+            return pygame.Vector2(
+                rect.x,
+                tile.rect.bottom + self.tile_margin,
+            )
+        elif self.is_colliding_from_left(collidable, tile):
+            return pygame.Vector2(
+                tile.rect.left - rect.width - self.tile_margin,
+                rect.y,
+            )
+        elif self.is_colliding_from_right(collidable, tile):
+            return pygame.Vector2(
+                tile.rect.right + self.tile_margin,
+                rect.y,
+            )
         else:
-            return pygame.Vector2(rect.x, rect.y + 2)
+            return pygame.Vector2(rect.x, rect.y)
 
     def get_new_velocity(
         self,
@@ -76,8 +95,16 @@ class CollideTileRule:
         if tile is None:
             return collidable.get_velocity()
 
-        velocity = collidable.get_velocity()
-        return pygame.Vector2(velocity.x, 0)
+        if self.is_colliding_from_top(collidable, tile):
+            return pygame.Vector2(collidable.get_velocity().x, 0)
+        elif self.is_colliding_from_bottom(collidable, tile):
+            return pygame.Vector2(collidable.get_velocity().x, 0)
+        elif self.is_colliding_from_left(collidable, tile):
+            return pygame.Vector2(0, collidable.get_velocity().y)
+        elif self.is_colliding_from_right(collidable, tile):
+            return pygame.Vector2(0, collidable.get_velocity().y)
+        else:
+            return collidable.get_velocity()
 
     def get_colliding_tile(
         self,
@@ -99,6 +126,98 @@ class CollideTileRule:
             if rect.colliderect(tile.rect):
                 return tile
         return None
+
+    def is_colliding_from_top(
+        self,
+        collidable: Collidable,
+        tile_state: TileState,
+    ) -> bool:
+        """
+        Checks if the collidable is colliding from the top of the tile.
+
+        Args:
+            collidable (Collidable): The collidable to check.
+            tile_state (TileState): The tile state to check against.
+
+        Returns:
+            bool: True if the collidable is colliding from the top of the tile, False otherwise.
+        """
+        rect = collidable.get_collision_rect()
+        velocity = collidable.get_velocity()
+        return (
+            rect.colliderect(tile_state.rect)
+            and rect.bottom <= tile_state.rect.centery
+            and velocity.y >= 0
+        )
+
+    def is_colliding_from_bottom(
+        self,
+        collidable: Collidable,
+        tile_state: TileState,
+    ) -> bool:
+        """
+        Checks if the collidable is colliding from the bottom of the tile.
+
+        Args:
+            collidable (Collidable): The collidable to check.
+            tile_state (TileState): The tile state to check against.
+
+        Returns:
+            bool: True if the collidable is colliding from the bottom of the tile, False otherwise.
+        """
+        rect = collidable.get_collision_rect()
+        velocity = collidable.get_velocity()
+        return (
+            rect.colliderect(tile_state.rect)
+            and rect.top >= tile_state.rect.centery
+            and velocity.y <= 0
+        )
+
+    def is_colliding_from_left(
+        self,
+        collidable: Collidable,
+        tile_state: TileState,
+    ) -> bool:
+        """
+        Checks if the collidable is colliding from the left of the tile.
+
+        Args:
+            collidable (Collidable): The collidable to check.
+            tile_state (TileState): The tile state to check against.
+
+        Returns:
+            bool: True if the collidable is colliding from the left of the tile, False otherwise.
+        """
+        rect = collidable.get_collision_rect()
+        velocity = collidable.get_velocity()
+        return (
+            rect.colliderect(tile_state.rect)
+            and rect.right <= tile_state.rect.centerx
+            and velocity.x >= 0
+        )
+
+    def is_colliding_from_right(
+        self,
+        collidable: Collidable,
+        tile_state: TileState,
+    ) -> bool:
+        """
+        Checks if the collidable is colliding from the right of the tile.
+
+        Args:
+            collidable (Collidable): The collidable to check.
+            tile_state (TileState): The tile state to check against.
+
+        Returns:
+            bool: True if the collidable is colliding from the right of the tile, False otherwise.
+        """
+        rect = collidable.get_collision_rect()
+        velocity = collidable.get_velocity()
+        return (
+            rect.colliderect(tile_state.rect)
+            and rect.left >= tile_state.rect.centerx
+            and velocity.x <= 0
+        )
 
 
 def apply_on_game_state_collidables(
