@@ -14,7 +14,7 @@ from .rules.physics.movement import (
     VelocityRule,
 )
 from .rules.tile import CollideTileRule
-from .rules.player import PlayerMoveRule
+from .rules.player import PlayerMoveRule, PlayerJumpRule
 from .constants.tile import TILE_MAP
 from .constants.player import HORIZONTAL_ACCELERATION, HORIZONTAL_FRICTION
 
@@ -48,18 +48,20 @@ def main():
             horizontal_acceleration=HORIZONTAL_ACCELERATION,
             horizontal_friction=HORIZONTAL_FRICTION,
         ),
+        PlayerJumpRule(jump_velocity=10),
         CollideTileRule(),
     ]
 
     while True:
-        for event in pygame.event.get():
+        events = list(pygame.event.get())
+        for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
 
         renderer.render(game_state)
         pygame.display.update()
 
-        game_state = apply_rules(game_state, rules)
+        game_state = apply_rules(game_state, rules, events)
 
         clock.tick(40)
 
@@ -67,9 +69,10 @@ def main():
 def apply_rules(
     game_state: GameState,
     rules: list,
+    events: list[pygame.event.Event],
 ) -> GameState:
     for rule in rules:
-        game_state = rule(game_state)
+        game_state = rule(game_state, events)
     return game_state
 
 

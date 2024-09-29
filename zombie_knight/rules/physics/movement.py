@@ -13,12 +13,17 @@ class GravityRule:
     Gravity rule.
     """
 
-    def __call__(self, game_state: GameState) -> GameState:
+    def __call__(
+        self,
+        game_state: GameState,
+        events: list[pygame.event.Event],
+    ) -> GameState:
         """
         Applies the gravity rule to all matters in the game state.
 
         Args:
             game_state (GameState): The game state to apply the gravity rule to.
+            events (list[pygame.event.Event]): The events occurred in the current frame.
 
         Returns:
             GameState: The new game state with the gravity rule applied.
@@ -42,12 +47,17 @@ class AccelerationRule:
     Acceleration rule.
     """
 
-    def __call__(self, game_state: GameState) -> GameState:
+    def __call__(
+        self,
+        game_state: GameState,
+        events: list[pygame.event.Event],
+    ) -> GameState:
         """
         Applies the acceleration rule to all matters in the game state.
 
         Args:
             game_state (GameState): The game state to apply the acceleration rule to.
+            events (list[pygame.event.Event]): The events occurred in the current frame.
 
         Returns:
             GameState: The new game state with the acceleration rule applied.
@@ -69,12 +79,17 @@ class VelocityRule:
     Velocity rule.
     """
 
-    def __call__(self, game_state: GameState) -> GameState:
+    def __call__(
+        self,
+        game_state: GameState,
+        events: list[pygame.event.Event],
+    ) -> GameState:
         """
         Applies the velocity rule to all matters in the game state.
 
         Args:
             game_state (GameState): The game state to apply the velocity rule to.
+            events (list[pygame.event.Event]): The events occurred in the current frame.
 
         Returns:
             GameState: The new game state with the velocity rule applied.
